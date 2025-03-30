@@ -16,11 +16,4 @@ export async function getImagesByQuery(query, page = 1) {
 
   const response = await axios.get(BASE_URL, { params });
   return response.data;
-
-  // return axios
-  //   .get(BASE_URL, { params })
-  //   .then(response => response.data)
-  //   .catch(error => {
-  //     throw new Error('Error fetching images');
-  //   });
 }
