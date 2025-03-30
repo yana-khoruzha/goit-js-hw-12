@@ -1,39 +1,52 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('#loader');
+const loadMoreBtn = document.querySelector('#load-more-btn');
 
-export function createCardMarkup(image) {
-  const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
-  return `
+
+
+export function createGallery(images) {
+  const markup = images.map(image => `
     <li class="gallery-item">
-    <a href="${largeImageURL}">
-      <img src="${webformatURL}" alt="${tags}" />
+      <a href="${image.largeImageURL}">
+        <img src="${image.webformatURL}" alt="${image.tags}" />
       </a>
       <div class="info">
-        <p><strong>Likes</strong><br>${likes}</p>
-        <p><strong>Views</strong><br>${views}</p>
-        <p><strong>Comments</strong><br>${comments}</p>
-        <p><strong>Downloads</strong><br>${downloads}</p>
+        <p><strong>Likes</strong><br>${image.likes}</p>
+        <p><strong>Views</strong><br>${image.views}</p>
+        <p><strong>Comments</strong><br>${image.comments}</p>
+        <p><strong>Downloads</strong><br>${image.downloads}</p>
       </div>
     </li>
-  `;
+    `).join('');
+
+    gallery.insertAdjacentHTML('beforeend', markup);
+  lightbox.refresh();
 }
 
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
 
-let lightbox = null;
+export function showLoader() {
+  loader.classList.remove('hidden');
+}
 
-export function renderGalleryMarkup(images, container) {
-  const markup = images.map(createCardMarkup).join('');
-  container.innerHTML = markup;
+export function hideLoader() {
+  loader.classList.add('hidden');
+}
 
+export function showLoadMoreButton() {
+  loadMoreBtn.classList.remove('hidden');
+}
 
-  if (lightbox) {
-    lightbox.refresh(); 
-  } else {
-    lightbox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
-  }
+export function hideLoadMoreButton() {
+  loadMoreBtn.classList.add('hidden');
 }
